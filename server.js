@@ -4,7 +4,8 @@
 const express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var User = require('./user/User')
+var User = require('./auth/User')
+var checkToken = require('./auth/CheckToken')
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -95,6 +96,15 @@ app.post('/auth', (req, res) => {
     res.status(200).send({ auth: true, token: token });
     }
   );
+});
+
+app.get('/check', checkToken, function(req, res){
+  User.findById(req.userId, {password: 0}, function(err, userFound){
+    if (err) return res.status(400).send('Credentials were incorrect');
+    if (!userFound) return res.status(404).send('User not found');
+
+    return res.status(200).send(userFound)
+  });
 });
 
 app.listen(PORT, HOST);
