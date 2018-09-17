@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var User = require('./user/User')
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
 
 // Constants
 const PORT = 3000;
@@ -37,7 +39,6 @@ app.post('/hello', (req, res) => {
   var username = req.body.user;
   var password = req.body.password;
   var confPassword = req.body.confPassword;
-  console.log(User);
   if (password !== confPassword) {
     res.status(400);
     res.send({
