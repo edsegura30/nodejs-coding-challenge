@@ -1,0 +1,14 @@
+{
+  "name": "docker_node_test",
+  "version": "0.0.1",
+  "description": "NodeJS Coding Challenge on Docker",
+  "author": "Edgar Segura <edsegura1608@gmail.com",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "mongoose": "5.2.15"
+  }
+}
