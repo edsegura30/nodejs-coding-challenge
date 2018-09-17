@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: npm start
+    volumes:
+      - .:/edsegura/app
+      - /edsegura/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - "27017:27017"
