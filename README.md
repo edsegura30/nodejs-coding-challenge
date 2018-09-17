@@ -17,3 +17,7 @@ You must have docker installed or go to [Docker]( https://docs.docker.com/instal
 Once you have docker installed, navigate to the folder that was created in git clone and simply run:
 
 **docker-compose up**
+
+## Trello
+
+https://trello.com/b/nazBD5b7/nodejs-coding-challenge
