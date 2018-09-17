@@ -8,6 +8,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.1",
     "mongoose": "5.2.15"
