@@ -4,7 +4,8 @@
 const express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var User = require('./user/User')
+var User = require('./auth/User')
+var checkToken = require('./auth/CheckToken')
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -72,13 +73,38 @@ app.post('/hello', (req, res) => {
       var token = jwt.sign({ id: user._id }, config.secret, {
         expiresIn: 86400
       });
-      return res.status(201).send({ auth: true, token: token });
+      return res.status(201).send({created: true});
     });
   }
 });
 
 app.post('/auth', (req, res) => {
-  res.send("Hrere will go the user Auth");
+  var username = req.body.user;
+  var password = req.body.password;
+  User.findOne(
+    {user: username},
+    function(error, userFound){
+      if (error) return res.status(500).send('Something went wrong. Please try again');
+      if (!userFound) return res.status(404).send('Wrong username and/or password');
+
+      var isPasswordValid = bcrypt.compareSync(password, userFound.password);
+      if (!isPasswordValid) return res.status(401).send({ auth: false, token: null });
+
+      var token = jwt.sign({ id: userFound._id }, config.secret, {
+        expiresIn: 86400
+      });
+    res.status(200).send({ auth: true, token: token });
+    }
+  );
+});
+
+app.get('/check', checkToken, function(req, res){
+  User.findById(req.userId, {password: 0}, function(err, userFound){
+    if (err) return res.status(400).send('Credentials were incorrect');
+    if (!userFound) return res.status(404).send('User not found');
+
+    return res.status(200).send(userFound)
+  });
 });
 
 app.listen(PORT, HOST);
