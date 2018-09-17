@@ -8,6 +8,7 @@ var User = require('./user/User')
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
+var config = require('./config');
 
 // Constants
 const PORT = 3000;
@@ -39,6 +40,7 @@ app.post('/hello', (req, res) => {
   var username = req.body.user;
   var password = req.body.password;
   var confPassword = req.body.confPassword;
+  console.log("New user POST");
   if (password !== confPassword) {
     res.status(400);
     res.send({
@@ -57,20 +59,27 @@ app.post('/hello', (req, res) => {
     });
   }
   else {
-    res.status(201);
+    var hashedPassword = bcrypt.hashSync(password, 8);
+
     User.create({
       user: username,
-      password: confPassword
-    });
-    res.send({
-      created: true
+      password : hashedPassword
+    },
+    function (err, user) {
+      if (err) return res.status(500).send("There was a problem registering the user.")
+
+      // create a token
+      var token = jwt.sign({ id: user._id }, config.secret, {
+        expiresIn: 86400
+      });
+      return res.status(201).send({ auth: true, token: token });
     });
   }
 });
 
 app.post('/auth', (req, res) => {
   res.send("Hrere will go the user Auth");
-})
+});
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
