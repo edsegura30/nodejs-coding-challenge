@@ -1,7 +1,7 @@
 FROM node:8
-WORKDIR /nodeApp
+WORKDIR /edsegura/app
 COPY package*.json ./
 RUN npm install
-COPY . .
+ADD . /edsegura/app/
 EXPOSE 3000
-CMD [ "npm", "start"]
+EXPOSE 27017

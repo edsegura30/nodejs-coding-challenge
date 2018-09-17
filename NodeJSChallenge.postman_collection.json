@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "d92e90a5-cc9e-4c24-bf7b-a222191c6320",
+		"name": "NodeJSChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hello!",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:3000/hello",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"hello"
+					]
+				},
+				"description": "This endpoint returns the JSON \n{\n\t\"hello\": \"world\"\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "User Creation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user\": \"edsegura\",\n\t\"password\": \"qwert12345\",\n\t\"confPassword\": \"qwert12345\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/hello",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"hello"
+					]
+				},
+				"description": "This endpoint must register new users sending:\n\n{\n\t\"username\": <username>,\n\t\"password\": <password>,\n\t\"confPassword\": <confPassword>\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user\": \"edsegura\",\n\t\"password\": \"qwert12345\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth"
+					]
+				},
+				"description": "This endpoint will login the users"
+			},
+			"response": []
+		},
+		{
+			"name": "Check Token",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViOWZlMzAzYWU3YjI1MDAxZTllNGUwMyIsImlhdCI6MTUzNzIwNTAyMiwiZXhwIjoxNTM3MjkxNDIyfQ.AktKrnwfk7wXIjBNvnw6Bx38GFjXGjSsXoOTowUfDX4"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user\": \"edsegura\",\n\t\"password\": \"qwert12345\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"check"
+					]
+				},
+				"description": "When you make the use of the Login endpoint, the value you get in the \"token\" key, is needed in this endpoint at the headers as the value of \"x-access-token\".\n\nIf the token is correctly decoded, it will return the ID and your username"
+			},
+			"response": []
+		}
+	]
+}
