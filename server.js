@@ -72,7 +72,7 @@ app.post('/hello', (req, res) => {
       var token = jwt.sign({ id: user._id }, config.secret, {
         expiresIn: 86400
       });
-      return res.status(201).send({ auth: true, token: token });
+      return res.status(201).send({created: true});
     });
   }
 });
