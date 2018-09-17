@@ -78,7 +78,23 @@ app.post('/hello', (req, res) => {
 });
 
 app.post('/auth', (req, res) => {
-  res.send("Hrere will go the user Auth");
+  var username = req.body.user;
+  var password = req.body.password;
+  User.findOne(
+    {user: username},
+    function(error, userFound){
+      if (error) return res.status(500).send('Something went wrong. Please try again');
+      if (!userFound) return res.status(404).send('Wrong username and/or password');
+
+      var isPasswordValid = bcrypt.compareSync(password, userFound.password);
+      if (!isPasswordValid) return res.status(401).send({ auth: false, token: null });
+
+      var token = jwt.sign({ id: userFound._id }, config.secret, {
+        expiresIn: 86400
+      });
+    res.status(200).send({ auth: true, token: token });
+    }
+  );
 });
 
 app.listen(PORT, HOST);
